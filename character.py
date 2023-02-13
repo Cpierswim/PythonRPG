@@ -16,12 +16,9 @@ class Character:
         self.name = name
         self.HP = HP
 
-    def perform_attack(self, attack_name):
-        self.HP -= self.attack_types[attack_name]
-
     def is_alive(self):
         return self.HP > 0
 
-    def perform_attack(self, attack_damage):
+    def attack_me(self, attack_damage):
         self.HP -= attack_damage
         

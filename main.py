@@ -40,7 +40,7 @@ def print_status_string():
 def player_attack(attacking_opponent, defending_opponent, attack_name):
 
     if attack_name in attacking_opponent.attack_types:
-        defending_opponent.perform_attack(main_player.attack_types[attack_name])
+        defending_opponent.attack_me(main_player.attack_types[attack_name])
         print(f"{attacking_opponent.name} performs {attack_name} on {defending_opponent.name} for {main_player.attack_types[attack_name]} HP")
     else:
         print("That attack type isn't available, you miss your turn")
@@ -49,22 +49,27 @@ def get_random_attack(player):
     list_of_attack_types = list(player.attack_types.keys())
     return list_of_attack_types[random.randrange(0, len(list_of_attack_types) - 1)]
 
+def run_game(main_player, opponents):
+    while(main_player.is_alive() and all_opponents_alive()):
+    
+        print_status_string()
+        selected_attack = input("What would you like to do: ")
+        selected_attack = selected_attack.lower()
+        player_attack(main_player, opponents[0], selected_attack)
+        if(opponents[0].is_alive()):
+            random_attack = get_random_attack(opponents[0])
+            player_attack(opponents[0], main_player, random_attack)
+            if not main_player.is_alive():
+                print(f"{main_player.name} has died")
+        else:
+            print(f"{opponents[0].name} has died")
+
 main_player = get_main_player()
 opponents = get_opponents()
 
-while(main_player.is_alive() and all_opponents_alive()):
-    
-    print_status_string()
-    selected_attack = input("What would you like to do: ")
-    selected_attack = selected_attack.lower()
-    player_attack(main_player, opponents[0], selected_attack)
-    if(opponents[0].is_alive()):
-        random_attack = get_random_attack(opponents[0])
-        player_attack(opponents[0], main_player, random_attack)
-        if not main_player.is_alive():
-            print(f"{main_player.name} has died")
-    else:
-        print(f"{opponents[0].name} has died")
+run_game(main_player, opponents)
+
+
 
 
         
